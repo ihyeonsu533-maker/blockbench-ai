@@ -1,24 +1,37 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>조선시대 NPC 제작기 v5</title>
+<title>조선시대 NPC 제작기 v6</title>
 <style>
 *{box-sizing:border-box}body{margin:0;padding:18px;background:#101827;color:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}main{max-width:820px;margin:auto}h1{font-size:25px}.lead{color:#cbd5e1;line-height:1.6}.card{background:#1e293b;border:1px solid #475569;border-radius:14px;padding:16px;margin:14px 0}label{display:block;margin:13px 0 6px;font-weight:650}input,select{width:100%;padding:11px;border-radius:9px;border:1px solid #64748b;background:#0f172a;color:white;font-size:16px}button{width:100%;;padding:14px;margin-top:16px;border:0;border-radius:10px;background:#4ade80;color:#052e16;font-weight:800;font-size:16px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.note{font-size:13px;color:#cbd5e1;line-height:1.6}.preview{display:flex;gap:12px;align-items:center;background:#0f172a;border:1px solid #475569;border-radius:10px;padding:12px;margin-top:12px}.preview img{width:96px;height:96px;image-rendering:pixelated;background:#fff}.tag{font-size:12px;color:#a7f3d0}
+
+.smallnote{font-size:12px;color:#cbd5e1;line-height:1.5}.section{margin-top:18px;padding-top:12px;border-top:1px solid #475569}
+@media(max-width:560px){.grid{grid-template-columns:1fr}}
 </style></head><body><main>
-<h1>조선시대 NPC 제작기 v5</h1>
-<p class="lead">신분별 전용 한복 스킨을 선택하고, 표준 마인크래프트 64×64 UV 구조로 Blockbench Bedrock 모델(.bbmodel)을 생성해. 제공된 스킨 디자인을 바탕으로 왕실·관료·무관·평민·여성 의상을 구분했어.</p>
+<h1>조선시대 NPC 제작기 v6</h1>
+<p class="lead">이미지의 픽셀 느낌을 유지하며 성별·머리·키·체형·얼굴을 조절하는 Blockbench 모델 제작기야. 64×64 스킨 텍스처를 모델 안에 포함해.</p>
 <div class="card">
 <label>NPC 이름</label><input id="name" value="King_NPC">
 <label>신분 / 인물 유형</label><select id="role">
 <option value="king">왕</option><option value="queen">왕비</option><option value="prince">세자 / 대군</option><option value="official">문관 / 관리</option><option value="scholar">선비 / 유생</option><option value="guard">무관 / 포졸</option><option value="soldier">군인</option><option value="merchant">상인</option><option value="commoner">평민 / 농민</option><option value="servant">하인 / 노비</option><option value="court">상궁 / 궁녀</option><option value="gisaeng">기생</option><option value="woman">양반 여성</option>
 </select>
+<div class="grid">
+ <div><label>성별</label><select id="gender"><option value="male">남성</option><option value="female">여성</option></select></div>
+ <div><label>머리 스타일</label><select id="hair"><option value="sangtu">상투</option><option value="gat">갓 쓴 머리</option><option value="long">긴 머리</option><option value="short">짧은 머리</option><option value="jjok">쪽머리</option><option value="daenggi">댕기머리</option><option value="updo">올림머리</option></select></div>
+</div>
+<div class="grid">
+ <div><label>키</label><select id="height"><option value="0.82">아주 작음</option><option value="0.92">작음</option><option value="1" selected>보통</option><option value="1.10">큼</option><option value="1.20">아주 큼</option></select></div>
+ <div><label>체형</label><select id="body"><option value="slim">마른 체형</option><option value="normal" selected>보통 체형</option><option value="round">통통한 체형</option><option value="muscle">근육질 체형</option></select></div>
+</div>
+<label>얼굴형</label><select id="face"><option value="round">둥근 얼굴</option><option value="slim">갸름한 얼굴</option><option value="square">각진 얼굴</option><option value="long">긴 얼굴</option><option value="wide">넓은 얼굴</option></select>
+<p class="smallnote">키·체형·얼굴형은 모델 크기와 비율에 반영되고, 머리 선택은 별도 머리 장식 파츠로 생성돼.</p>
 <label>의상 디자인 (신분에 따라 자동 선택 · 직접 변경 가능)</label><select id="outfit">
 <option value="royal">왕실 예복 · 붉은색/금색</option><option value="female_pink">여성 한복 · 분홍색 치마</option><option value="female_blue">여성 한복 · 푸른색 치마</option><option value="female_red">여성 예복 · 붉은색 장식</option><option value="male_plain">남성 한복 · 기본 도포</option><option value="male_hunter">남성 한복 · 보라색 포인트</option><option value="black_cheollik">검은 철릭 · 무관복</option><option value="official">관리복 · 어두운 관복</option>
 </select>
-<div class="preview"><img id="skinPreview" alt="선택한 한복 스킨 미리보기"><div><b id="outfitTitle">왕실 예복</b><div class="tag">64×64 픽셀 스킨 미리보기</div><p class="note">의상 그림은 업로드한 스킨을 그대로 사용해. 신분을 바꾸면 어울리는 디자인이 자동 선택돼.</p></div></div>
-<p class="note">머리 모양은 선택한 원본 스킨에 포함된 디자인을 유지해. 의상과 머리 모양이 따로 놀지 않도록 자동으로 맞췄어.</p>
+<div class="preview"><img id="skinPreview" alt="선택한 한복 스킨 미리보기"><div><b id="outfitTitle">왕실 예복</b><div class="tag">64×64 픽셀 스킨 미리보기</div><p class="note">의상은 제작기에 포함된 64×64 픽셀 스킨을 사용해. 신분을 바꾸면 기본 의상이 자동 선택돼.</p></div></div>
+<p class="note">성별에 따라 어울리는 머리 스타일을 고를 수 있어. 왕을 선택하면 남성·왕실 예복으로 자동 설정돼.</p>
 <label>피부색 보정</label><select id="skinTone"><option value="original">원본 스킨 유지</option><option value="light">밝게</option><option value="warm">따뜻하게</option></select>
 <button id="make">신분별 한복 NPC .bbmodel 생성</button>
-<p class="note">※ 이번 버전은 옷의 색 조각을 임의로 늘어놓는 방식을 제거했어. 스킨의 표준 UV 배치(머리·몸통·팔·다리)를 사용하므로 Blockbench에서 각 신체 부위에 맞게 텍스처가 붙어야 해. 스킨의 겉레이어는 원본 디자인에 포함된 부분만 표시돼.</p>
+<p class="note">※ 현재 겉 레이어는 별도 3D 파츠로 생성돼. 원본 스킨의 레이어 픽셀을 그대로 분리해 입히는 정식 플레이어 스킨 방식과는 다르므로, Blockbench에서 텍스처 정렬을 확인해줘.</p>
 </div>
 <div class="card"><b>파일 여는 법</b><p class="lead">Blockbench 웹 → 파일 → 모델 열기 → 다운로드한 .bbmodel 선택. 텍스처는 모델 안에 포함돼.</p><a style="color:#86efac" href="https://web.blockbench.net/" target="_blank">Blockbench 웹 열기</a></div>
 </main>
@@ -39,20 +52,77 @@ const TITLES={king:'왕',queen:'왕비',prince:'세자_대군',official:'문관_
 const uid=()=> 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0;return(c==='x'?r:(r&3|8)).toString(16)});
 const $=id=>document.getElementById(id);
 function updatePreview(){const o=OUTFITS[$('outfit').value];$('skinPreview').src='data:image/png;base64,'+SKINS[o.skin];$('outfitTitle').textContent=o.title;}
-$('role').addEventListener('change',()=>{ $('outfit').value=ROLE_PRESET[$('role').value]; if($('role').value==='king')$('name').value='King_NPC'; if($('role').value==='queen')$('name').value='Queen_NPC'; updatePreview(); });
-$('outfit').addEventListener('change',updatePreview);updatePreview();
+function syncGenderHair(){
+ const r=$('role').value, female=['queen','court','gisaeng','woman'].includes(r);
+ $('gender').value=female?'female':'male';
+ setHairOptions(false);
+ $('hair').value=female?'jjok':(r==='king'?'sangtu':'gat');
+}
+$('role').addEventListener('change',()=>{ $('outfit').value=ROLE_PRESET[$('role').value]; if($('role').value==='king')$('name').value='King_NPC'; if($('role').value==='queen')$('name').value='Queen_NPC'; syncGenderHair(); updatePreview(); });
+function setHairOptions(keep=true){
+ const f=$('gender').value==='female';
+ const opts=f?[['jjok','쪽머리'],['daenggi','댕기머리'],['updo','올림머리'],['long','긴 생머리']]:[['sangtu','상투'],['gat','갓 쓴 머리'],['long','긴 머리'],['short','짧은 머리']];
+ const previous=$('hair').value;
+ $('hair').innerHTML=opts.map(x=>`<option value="${x[0]}">${x[1]}</option>`).join('');
+ $('hair').value=keep&&opts.some(x=>x[0]===previous)?previous:opts[0][0];
+}
+$('gender').addEventListener('change',()=>{setHairOptions(false);updatePreview();});
+
+$('outfit').addEventListener('change',updatePreview);syncGenderHair();updatePreview();
 function build(){
  const role=$('role').value, outfit=OUTFITS[$('outfit').value], name=$('name').value.trim()||'Joseon_NPC';
+ const gender=$('gender').value, hair=$('hair').value, height=Number($('height').value), body=$('body').value, face=$('face').value;
  const skinBytes=Uint8Array.from(atob(SKINS[outfit.skin]),c=>c.charCodeAt(0));
  const img=new Image(); const blob=new Blob([skinBytes],{type:'image/png'}); const url=URL.createObjectURL(blob);
  img.onload=()=>{const canvas=document.createElement('canvas');canvas.width=64;canvas.height=64;const ctx=canvas.getContext('2d');ctx.drawImage(img,0,0,64,64);
  if($('skinTone').value!=='original'){const im=ctx.getImageData(0,0,64,64);for(let i=0;i<im.data.length;i+=4){if(im.data[i+3]===0)continue;let r=im.data[i],g=im.data[i+1],b=im.data[i+2];if($('skinTone').value==='light'){r=Math.min(255,r*1.06+7);g=Math.min(255,g*1.06+7);b=Math.min(255,b*1.06+7)}else{r=Math.min(255,r*1.05+5);g=Math.min(255,g*1.02+2);b=Math.max(0,b*.96)}im.data[i]=r;im.data[i+1]=g;im.data[i+2]=b;}ctx.putImageData(im,0,0);}
  const tex=canvas.toDataURL('image/png');
- const elements=[],groups=[];function addPart(part,from,to,uv){const id=uid(),gid=uid();const [u,v]=uv,w=to[0]-from[0],h=to[1]-from[1],d=to[2]-from[2];const faces={north:{uv:[u+d,v+d,u+d+w,v+d+h],texture:0},east:{uv:[u,v+d,u+d,v+d+h],texture:0},south:{uv:[u+2*d+w,v+d,u+2*d+2*w,v+d+h],texture:0},west:{uv:[u+d+w,v+d,u+2*d+w,v+d+h],texture:0},up:{uv:[u+d,v,u+d+w,v+d],texture:0},down:{uv:[u+d+w,v,u+2*d+w,v+d],texture:0}};elements.push({uuid:id,name:part,type:'cube',from,to,origin:[0,from[1],0],rotation:[0,0,0],autouv:0,box_uv:true,uv_offset:uv,faces});groups.push({uuid:gid,name:part,origin:[0,from[1],0],rotation:[0,0,0],children:[id]});}
- addPart('머리',[-4,24,-4],[4,32,4],[0,0]);addPart('몸통',[-4,12,-2],[4,24,2],[16,16]);addPart('오른팔',[-8,12,-2],[-4,24,2],[40,16]);addPart('왼팔',[4,12,-2],[8,24,2],[32,48]);addPart('오른다리',[-4,0,-2],[0,12,2],[0,16]);addPart('왼다리',[0,0,-2],[4,12,2],[16,48]);
- // Hair/headwear is already painted into the selected skin. Avoid adding floating cubes that break alignment.
- const root=uid(),model={meta:{format_version:'5.0',model_format:'bedrock',box_uv:true},name,model_identifier:'geometry.'+name.toLowerCase().replace(/[^a-z0-9_]/g,'_'),visible_box:[2,3,1],resolution:{width:64,height:64},elements,groups:[{uuid:root,name:'root',origin:[0,0,0],rotation:[0,0,0],children:groups.map(g=>g.uuid)},...groups],outliner:[{uuid:root,isOpen:true,children:groups.map(g=>({uuid:g.uuid,isOpen:true,children:g.children}))}],textures:[{path:'',name:'joseon_'+outfit.skin+'.png',folder:'',namespace:'',id:uid(),particle:false,render_mode:'normal',visible:true,mode:'bitmap',saved:true,uuid:uid(),source:tex,width:64,height:64,uv_width:64,uv_height:64}],animations:[],display:{},groups_data:[],name_history:[]};
- const b=new Blob([JSON.stringify(model)],{type:'application/json'}),a=document.createElement('a'),u=URL.createObjectURL(b);a.href=u;a.download=name.replace(/[\/:*?"<>|]/g,'_')+'.bbmodel';a.click();setTimeout(()=>{URL.revokeObjectURL(u);URL.revokeObjectURL(url)},1500);};img.src=url;
+ const elements=[],groups=[];
+ function addPart(part,from,to,uv,opts={}){
+  const id=uid(),gid=uid();const [u,v]=uv,w=to[0]-from[0],h=to[1]-from[1],d=to[2]-from[2];
+  // Box UV coordinates are kept in the standard 64x64 skin atlas.
+  const faces={north:{uv:[u+d,v+d,u+d+w,v+d+h],texture:0},east:{uv:[u,v+d,u+d,v+d+h],texture:0},south:{uv:[u+2*d+w,v+d,u+2*d+2*w,v+d+h],texture:0},west:{uv:[u+d+w,v+d,u+2*d+w,v+d+h],texture:0},up:{uv:[u+d,v,u+d+w,v+d],texture:0},down:{uv:[u+d+w,v,u+2*d+w,v+d],texture:0}};
+  elements.push({uuid:id,name:part,type:'cube',from,to,origin:[0,from[1],0],rotation:[0,0,0],autouv:0,box_uv:true,uv_offset:uv,faces,visibility:true});
+  groups.push({uuid:gid,name:part,origin:[0,from[1],0],rotation:[0,0,0],children:[id]});
+ }
+ const width=body==='slim'?3.25:body==='round'?4.7:body==='muscle'?4.55:4;
+ const headWidth=face==='slim'?3.45:face==='wide'?4.45:4;
+ const headHeight=(face==='long'?8.8:face==='round'?7.5:8)*height;
+ const legHeight=12*height, torsoHeight=12*height, shoulder=width;
+ const waist=body==='round'?width+0.25:body==='muscle'?width-0.15:width;
+ const yLeg=legHeight, yTorso=legHeight+torsoHeight, yHead=yTorso;
+ addPart('머리',[-headWidth,yHead,-4],[headWidth,yHead+headHeight,4],[0,0]);
+ addPart('몸통',[-waist,yLeg,-2],[waist,yTorso,2],[16,16]);
+ addPart('오른팔',[-shoulder-4,yLeg,-2],[-shoulder,yTorso,2],[40,16]);
+ addPart('왼팔',[shoulder,yLeg,-2],[shoulder+4,yTorso,2],[32,48]);
+ addPart('오른다리',[-4,0,-2],[0,yLeg,2],[0,16]);
+ addPart('왼다리',[0,0,-2],[4,yLeg,2],[16,48]);
+ // Hair/headwear are separate, selectable geometry parts (not merely labels).
+ const hy=yHead+headHeight;
+ if(hair==='gat'){
+   addPart('갓_윗부분',[-2.2,hy-.1,-2.2],[2.2,hy+1.2,2.2],[32,0]);
+   addPart('갓_챙',[-6,hy-.35,-6],[6,hy+.05,6],[32,8]);
+ }else if(hair==='sangtu'){
+   addPart('상투',[-1.25,hy-.2,-1.25],[1.25,hy+1.7,1.25],[32,0]);
+ }else if(hair==='jjok'||hair==='updo'){
+   addPart(hair==='jjok'?'쪽머리':'올림머리',[-1.4,hy-.2,-1.5],[1.4,hy+1.2,1.5],[32,0]);
+ }else if(hair==='daenggi'){
+   addPart('댕기머리_뒤쪽',[ -1.2,hy-1.0,-4.5],[1.2,hy+1.0,-3.5],[40,0]);
+   addPart('댕기머리_리본',[-.7,hy-1.8,-4.6],[.7,hy-1.0,-3.4],[40,8]);
+ }else if(hair==='long'){
+   addPart('긴머리_뒤쪽',[-headWidth-.15,yHead+1,-4.4],[headWidth+.15,hy,-3.6],[40,0]);
+ }else if(hair==='short'){
+   addPart('짧은머리_윗부분',[-headWidth-.1,hy-.8,-3.8],[headWidth+.1,hy+.1,3.8],[32,0]);
+ }
+ // Clothing overlay pieces are slightly expanded; the atlas uses the skin's outer-layer regions.
+ const expand=.18;
+ addPart('상의_겉레이어',[-waist-expand,yLeg-.05,-2.2],[waist+expand,yTorso+.05,2.2],[16,32]);
+ addPart('오른팔_겉레이어',[-shoulder-4.18,yLeg-.05,-2.18],[-shoulder-.02,yTorso+.05,2.18],[40,32]);
+ addPart('왼팔_겉레이어',[shoulder+.02,yLeg-.05,-2.18],[shoulder+4.18,yTorso+.05,2.18],[48,48]);
+ addPart('오른다리_겉레이어',[-4.18,-.05,-2.18],[.02,yLeg+.05,2.18],[0,32]);
+ addPart('왼다리_겉레이어',[-.02,-.05,-2.18],[4.18,yLeg+.05,2.18],[0,48]);
+ const root=uid(),model={meta:{format_version:'5.0',model_format:'bedrock',box_uv:true},name,model_identifier:'geometry.'+name.toLowerCase().replace(/[^a-z0-9_]/g,'_'),visible_box:[2,3*height,1],resolution:{width:64,height:64},elements,groups:[{uuid:root,name:'root',origin:[0,0,0],rotation:[0,0,0],children:groups.map(g=>g.uuid)},...groups],outliner:[{uuid:root,isOpen:true,children:groups.map(g=>({uuid:g.uuid,isOpen:true,children:g.children}))}],textures:[{path:'',name:'joseon_'+outfit.skin+'.png',folder:'',namespace:'',id:uid(),particle:false,render_mode:'normal',visible:true,mode:'bitmap',saved:true,uuid:uid(),source:tex,width:64,height:64,uv_width:64,uv_height:64}],animations:[],display:{},groups_data:[],name_history:[],joseon_options:{role,gender,hair,height,body,face,outfit:$('outfit').value}};
+ const b=new Blob([JSON.stringify(model)],{type:'application/json'}),a=document.createElement('a'),u=URL.createObjectURL(b);a.href=u;a.download=name.replace(/[\/:*?"<>|]/g,'_')+'.bbmodel';a.click();setTimeout(()=>{URL.revokeObjectURL(u);URL.revokeObjectURL(url);URL.revokeObjectURL(blob)},1500);};img.src=url;
 }
 $('make').addEventListener('click',build);
 </script></body></html>
