@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Blockbench 모델 도우미</title>
+<style>
+:root{color-scheme:dark;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{margin:0;background:#111827;color:#f3f4f6;padding:18px}
+main{max-width:760px;margin:auto}h1{font-size:24px}p{line-height:1.55;color:#cbd5e1}
+.card{background:#1f2937;border:1px solid #374151;border-radius:14px;padding:16px;margin:14px 0}
+label{display:block;margin:12px 0 5px;color:#e5e7eb}
+input{box-sizing:border-box;width:100%;padding:12px;border-radius:9px;border:1px solid #4b5563;background:#111827;color:white;font-size:16px}
+button{border:0;border-radius:10px;padding:13px 16px;font-size:16px;font-weight:700;background:#22c55e;color:#052e16;width:100%;margin-top:12px}
+.small{font-size:13px;color:#9ca3af}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+</style>
+</head>
+<body><main>
+<h1>Blockbench 모델 도우미</h1>
+<p>아이패드에서 간단한 베드락 인간형 모델의 <b>.bbmodel</b> 파일을 생성하는 무료 도구야. 생성한 파일은 Blockbench 웹에서 열어 추가 편집할 수 있어.</p>
+<div class="card">
+<label>모델 이름</label><input id="name" value="My NPC">
+<label>머리 크기 (가로 × 세로 × 깊이)</label><div class="row"><input id="hw" type="number" value="8" min="2" max="16"><input id="hh" type="number" value="8" min="2" max="16"><input id="hd" type="number" value="8" min="2" max="16"></div>
+<label>몸통 너비</label><input id="bw" type="number" value="8" min="2" max="16">
+<label>팔 너비</label><input id="aw" type="number" value="4" min="1" max="8">
+<label>다리 너비</label><input id="lw" type="number" value="4" min="1" max="8">
+<label>텍스처 해상도</label><div class="row"><input id="tw" type="number" value="64" min="16" max="256"><input id="th" type="number" value="64" min="16" max="256"></div>
+<button id="make">.bbmodel 파일 생성하기</button>
+<p class="small">이 도구는 모델의 기본 큐브와 뼈대 구조를 생성해. 얼굴·옷 텍스처와 세부 머리카락은 Blockbench에서 추가해야 해.</p>
+</div>
+<div class="card">
+<b>사용 순서</b>
+<p>1. 위 값을 바꾸고 파일을 생성해.<br>2. Blockbench 웹을 열어 File → Open Model을 선택해.<br>3. 다운로드한 .bbmodel 파일을 불러와.</p>
+<p><a href="https://web.blockbench.net/" target="_blank" style="color:#86efac">Blockbench 웹 열기</a></p>
+</div>
+</main>
+<script>
+const uid=()=> 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0;return(c==='x'?r:(r&3|8)).toString(16)});
+const n=id=>Math.max(1,Math.min(256,Number(document.getElementById(id).value)||1));
+function cube(name,from,to,origin,uv){
+ const id=uid(), faces={};
+ for(const f of ['north','east','south','west','up','down']) faces[f]={uv:[uv[0],uv[1],uv[0]+8,uv[1]+8],texture:null};
+ return {uuid:id,name,type:'cube',from,to,origin,rotation:[0,0,0],autouv:0,box_uv:true,uv_offset:uv,faces};
+}
+function group(name,origin,children){return {uuid:uid(),name,origin,rotation:[0,0,0],children, };}
+document.getElementById('make').onclick=()=>{
+ const hw=n('hw'),hh=n('hh'),hd=n('hd'),bw=n('bw'),aw=n('aw'),lw=n('lw');
+ const elements=[],groups=[];
+ const add=(gname,origin,from,to,uv)=>{
+   const e=cube(gname,from,to,origin,uv);elements.push(e);
+   const g=group(gname,origin,[e.uuid]);groups.push(g);return g.uuid;
+ };
+ const head=add('head',[0,24,0],[-hw/2,24,-hd/2],[hw/2,24+hh,hd/2],[0,0]);
+ const body=add('body',[0,24-hh,0],[-bw/2,12,-2],[bw/2,24,2],[0,16]);
+ const armL=add('rightArm',[-bw/2-aw/2,22,0],[-bw/2-aw,12,-2],[-bw/2,24,2],[32,16]);
+ const armR=add('leftArm',[bw/2+aw/2,22,0],[bw/2,12,-2],[bw/2+aw,24,2],[40,16]);
+ const legL=add('rightLeg',[-lw/2,12,0],[-lw,0,-2],[0,12,2],[0,32]);
+ const legR=add('leftLeg',[lw/2,12,0],[0,0,-2],[lw,12,2],[16,32]);
+ const root=group('root',[0,0,0],[head,body,armL,armR,legL,legR]);groups.unshift(root);
+ const model={
+  meta:{format_version:'5.0',model_format:'bedrock',box_uv:true},
+  name:document.getElementById('name').value||'My NPC',
+  model_identifier:'geometry.'+((document.getElementById('name').value||'my_npc').toLowerCase().replace(/[^a-z0-9_]/g,'_')),
+  visible_box:[2,3,1],resolution:{width:n('tw'),height:n('th')},
+  elements,groups,
+  outliner:[{uuid:root.uuid,isOpen:true,children:[head,body,armL,armR,legL,legR]}],
+  textures:[],animations:[],display:{},groups_data:[],name_history:[]
+ };
+ const blob=new Blob([JSON.stringify(model,null,2)],{type:'application/json'});
+ const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+ const safe=(model.name||'npc').replace(/[\\/:*?"<>|]/g,'_');a.download=safe+'.bbmodel';a.click();
+ setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+};
+</script></body></html>
