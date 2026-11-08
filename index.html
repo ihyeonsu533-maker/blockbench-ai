@@ -1,73 +1,95 @@
 <!doctype html>
-<html lang="ko">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Blockbench 모델 도우미</title>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>조선 NPC 제작기 v3</title>
 <style>
-:root{color-scheme:dark;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-body{margin:0;background:#111827;color:#f3f4f6;padding:18px}
-main{max-width:760px;margin:auto}h1{font-size:24px}p{line-height:1.55;color:#cbd5e1}
-.card{background:#1f2937;border:1px solid #374151;border-radius:14px;padding:16px;margin:14px 0}
-label{display:block;margin:12px 0 5px;color:#e5e7eb}
-input{box-sizing:border-box;width:100%;padding:12px;border-radius:9px;border:1px solid #4b5563;background:#111827;color:white;font-size:16px}
-button{border:0;border-radius:10px;padding:13px 16px;font-size:16px;font-weight:700;background:#22c55e;color:#052e16;width:100%;margin-top:12px}
-.small{font-size:13px;color:#9ca3af}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-</style>
-</head>
-<body><main>
-<h1>Blockbench 모델 도우미</h1>
-<p>아이패드에서 간단한 베드락 인간형 모델의 <b>.bbmodel</b> 파일을 생성하는 무료 도구야. 생성한 파일은 Blockbench 웹에서 열어 추가 편집할 수 있어.</p>
+*{box-sizing:border-box}body{margin:0;padding:18px;background:#101827;color:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+main{max-width:780px;margin:auto}h1{font-size:25px}.lead{color:#cbd5e1;line-height:1.55}.card{background:#1e293b;border:1px solid #475569;border-radius:14px;padding:16px;margin:14px 0}
+label{display:block;margin:13px 0 6px;font-weight:650}input,select{width:100%;padding:11px;border-radius:9px;border:1px solid #64748b;background:#0f172a;color:white;font-size:16px}
+input[type=color]{height:48px;padding:4px}button{width:100%;padding:14px;margin-top:16px;border:0;border-radius:10px;background:#4ade80;color:#052e16;font-weight:800;font-size:16px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.note{font-size:13px;color:#94a3b8;line-height:1.5}
+</style></head><body><main>
+<h1>조선시대 NPC 제작기 v3</h1>
+<p class="lead">아이패드에서 인물 유형·머리 모양·한복 색상·피부색을 고르고, 기본 텍스처가 포함된 Blockbench <b>.bbmodel</b>을 생성해.</p>
 <div class="card">
-<label>모델 이름</label><input id="name" value="My NPC">
-<label>머리 크기 (가로 × 세로 × 깊이)</label><div class="row"><input id="hw" type="number" value="8" min="2" max="16"><input id="hh" type="number" value="8" min="2" max="16"><input id="hd" type="number" value="8" min="2" max="16"></div>
-<label>몸통 너비</label><input id="bw" type="number" value="8" min="2" max="16">
-<label>팔 너비</label><input id="aw" type="number" value="4" min="1" max="8">
-<label>다리 너비</label><input id="lw" type="number" value="4" min="1" max="8">
-<label>텍스처 해상도</label><div class="row"><input id="tw" type="number" value="64" min="16" max="256"><input id="th" type="number" value="64" min="16" max="256"></div>
-<button id="make">.bbmodel 파일 생성하기</button>
-<p class="small">이 도구는 모델의 기본 큐브와 뼈대 구조를 생성해. 얼굴·옷 텍스처와 세부 머리카락은 Blockbench에서 추가해야 해.</p>
+<label>NPC 이름</label><input id="name" value="Joseon_NPC">
+<label>인물 유형</label><select id="role"><option value="male">남성 관리 / 선비</option><option value="female">여성 궁녀 / 양반</option><option value="guard">무관 / 경비</option></select>
+<label>머리 모양</label><select id="hair"><option value="bun">상투 / 쪽머리</option><option value="long">긴 머리</option><option value="hat">갓</option></select>
+<label>옷 형태</label><select id="cloth"><option value="robe">도포 / 치마저고리 실루엣</option><option value="uniform">관복 / 무관복 실루엣</option></select>
+<div class="grid">
+ <div><label>한복 기본색</label><input id="clothColor" type="color" value="#263b78"></div>
+ <div><label>한복 포인트색</label><input id="trimColor" type="color" value="#c5a34a"></div>
+ <div><label>머리카락 색</label><input id="hairColor" type="color" value="#211b19"></div>
+ <div><label>피부색</label><input id="skinColor" type="color" value="#e9b995"></div>
+ <div><label>눈 색</label><input id="eyeColor" type="color" value="#241714"></div>
+ <div><label>입술 색</label><input id="lipColor" type="color" value="#a94f59"></div>
 </div>
-<div class="card">
-<b>사용 순서</b>
-<p>1. 위 값을 바꾸고 파일을 생성해.<br>2. Blockbench 웹을 열어 File → Open Model을 선택해.<br>3. 다운로드한 .bbmodel 파일을 불러와.</p>
-<p><a href="https://web.blockbench.net/" target="_blank" style="color:#86efac">Blockbench 웹 열기</a></p>
+<label><input id="makeup" type="checkbox" checked style="width:auto"> 여성 NPC 화장(눈매·입술 강조)</label>
+<label>텍스처 해상도</label><select id="res"><option value="64">64 × 64</option><option value="128">128 × 128</option></select>
+<button id="make">텍스처 포함 .bbmodel 생성</button>
+<p class="note">색상은 간단한 픽셀 텍스처로 적용돼. 얼굴 표정·정교한 옷 무늬·머리카락 가닥은 Blockbench에서 추가 편집하면 돼. 생성 파일은 Blockbench 웹에서 열어 확인해 줘.</p>
 </div>
+<div class="card"><b>파일 여는 법</b><p class="lead">Blockbench 웹 → 파일 → 모델 열기 → 다운로드한 .bbmodel 선택.</p><a style="color:#86efac" href="https://web.blockbench.net/" target="_blank">Blockbench 웹 열기</a></div>
 </main>
 <script>
 const uid=()=> 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0;return(c==='x'?r:(r&3|8)).toString(16)});
-const n=id=>Math.max(1,Math.min(256,Number(document.getElementById(id).value)||1));
-function cube(name,from,to,origin,uv){
- const id=uid(), faces={};
- for(const f of ['north','east','south','west','up','down']) faces[f]={uv:[uv[0],uv[1],uv[0]+8,uv[1]+8],texture:null};
- return {uuid:id,name,type:'cube',from,to,origin,rotation:[0,0,0],autouv:0,box_uv:true,uv_offset:uv,faces};
+function build(){
+ const elements=[],groups=[],rootChildren=[];
+ const colors={
+  skin:document.getElementById('skinColor').value,
+  cloth:document.getElementById('clothColor').value,
+  trim:document.getElementById('trimColor').value,
+  hair:document.getElementById('hairColor').value,
+  eye:document.getElementById('eyeColor').value,
+  lip:document.getElementById('lipColor').value
+ };
+ const tiles={skin:[0,0],cloth:[8,0],trim:[16,0],hair:[24,0],eye:[32,0],lip:[40,0]};
+ function category(name){
+  if(/눈/.test(name))return 'eye'; if(/입술|입/.test(name))return 'lip';
+  if(/머리|상투|쪽|갓|긴머리/.test(name))return 'hair';
+  if(/도포|관복|옷|소매|자락|허리띠/.test(name))return /띠|자락/.test(name)?'trim':'cloth';
+  if(/팔|다리|몸통|얼굴|코|피부/.test(name))return 'skin';
+  return 'cloth';
+ }
+ function add(name,from,to,origin=[0,0,0]){
+  const id=uid(),gid=uid(),cat=category(name),uv=tiles[cat];
+  const faces={};for(const f of ['north','east','south','west','up','down'])faces[f]={uv:[uv[0],uv[1],uv[0]+8,uv[1]+8],texture:0};
+  elements.push({uuid:id,name,type:'cube',from,to,origin,rotation:[0,0,0],autouv:0,box_uv:true,uv_offset:uv,faces});
+  groups.push({uuid:gid,name,origin,rotation:[0,0,0],children:[id]});rootChildren.push(gid);
+ }
+ // Basic body
+ add('머리',[-4,24,-4],[4,32,4],[0,24,0]);
+ add('몸통',[-4,12,-2],[4,24,2],[0,24,0]);
+ add('오른팔',[-4,12,-2],[0,24,2],[-2,22,0]);add('왼팔',[0,12,-2],[4,24,2],[2,22,0]);
+ add('오른다리',[-4,0,-2],[0,12,2],[-2,12,0]);add('왼다리',[0,0,-2],[4,12,2],[2,12,0]);
+ const cloth=document.getElementById('cloth').value,hair=document.getElementById('hair').value,role=document.getElementById('role').value;
+ if(cloth==='robe'){
+  add('도포_몸판',[-4.8,7,-2.7],[4.8,24.2,2.7],[0,24,0]);
+  add('도포_왼자락',[-4.7,0,-2.8],[0,12,2.8],[-2,12,0]);add('도포_오른자락',[0,0,-2.8],[4.7,12,2.8],[2,12,0]);
+ }else{
+  add('관복_겉옷',[-5,10,-3],[5,24.5,3],[0,24,0]);add('관복_허리띠',[-5.1,11,-3.2],[5.1,12.5,3.2],[0,12,0]);add('관복_자락',[-4.8,3,-2.8],[4.8,11,2.8],[0,11,0]);
+ }
+ add('왼쪽소매',[-8.5,13,-3],[-4,23,3],[-6,22,0]);add('오른쪽소매',[4,13,-3],[8.5,23,3],[6,22,0]);
+ if(hair==='bun'){add(role==='female'?'쪽머리':'상투',[-2,31,-1.5],[2,34,1.5],[0,32,0]);add('뒷머리',[-4.3,27,2.8],[4.3,32,4.5],[0,30,3.5]);}
+ else if(hair==='long'){add('긴머리_뒤',[-4.4,25,2.5],[4.4,32,4.5],[0,28,3.5]);add('긴머리_왼쪽',[-4.8,18,0],[-3.2,29,4],[-4,28,2]);add('긴머리_오른쪽',[3.2,18,0],[4.8,29,4],[4,28,2]);}
+ else{add('갓_챙',[-7,31,-7],[7,32,7],[0,31,0]);add('갓_원통',[-2.5,31,-2.5],[2.5,36,2.5],[0,31,0]);}
+ add('왼쪽눈',[-2.2,27.5,-4.2],[-1.2,28.3,-4.05],[-1.7,28,-4]);add('오른쪽눈',[1.2,27.5,-4.2],[2.2,28.3,-4.05],[1.7,28,-4]);
+ add('입술',[-1,25.5,-4.25],[1,26,-4.05],[0,25.7,-4]);
+ // Build a small color atlas: each 8x8 tile is filled with a base color and subtle pixel variation.
+ const canvas=document.createElement('canvas');canvas.width=64;canvas.height=64;const ctx=canvas.getContext('2d');
+ for(const [key,[x,y]] of Object.entries(tiles)){
+  ctx.fillStyle=colors[key];ctx.fillRect(x,y,8,8);
+  const c=colors[key];ctx.fillStyle='rgba(255,255,255,.10)';ctx.fillRect(x,y,8,1);ctx.fillRect(x,y,1,8);
+  ctx.fillStyle='rgba(0,0,0,.10)';ctx.fillRect(x,y+7,8,1);ctx.fillRect(x+7,y,1,8);
+  if(key==='eye'){ctx.fillStyle=colors.eye;ctx.fillRect(x+2,y+2,4,4);}
+ }
+ // optional soft makeup accents on eye/lip swatches for female models
+ if(role==='female' && document.getElementById('makeup').checked){
+  ctx.fillStyle=colors.lip;ctx.fillRect(40,0,8,8);ctx.fillStyle='rgba(80,20,30,.35)';ctx.fillRect(40,0,8,2);
+ }
+ const tex=canvas.toDataURL('image/png');
+ const root=uid(),modelName=document.getElementById('name').value||'Joseon_NPC';
+ const model={meta:{format_version:'5.0',model_format:'bedrock',box_uv:true},name:modelName,model_identifier:'geometry.'+modelName.toLowerCase().replace(/[^a-z0-9_]/g,'_'),visible_box:[2,3,1],resolution:{width:64,height:64},elements,groups:[{uuid:root,name:'root',origin:[0,0,0],rotation:[0,0,0],children:rootChildren},...groups],outliner:[{uuid:root,isOpen:true,children:groups.map(g=>({uuid:g.uuid,isOpen:true,children:g.children}))}],textures:[{path:'',name:'joseon_npc_texture.png',folder:'',namespace:'',id:uid(),particle:false,render_mode:'normal',visible:true,mode:'bitmap',saved:true,uuid:uid(),source:tex,width:64,height:64,uv_width:64,uv_height:64}],animations:[],display:{},groups_data:[],name_history:[]};
+ const blob=new Blob([JSON.stringify(model)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=modelName.replace(/[\\/:*?"<>|]/g,'_')+'.bbmodel';a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);
 }
-function group(name,origin,children){return {uuid:uid(),name,origin,rotation:[0,0,0],children, };}
-document.getElementById('make').onclick=()=>{
- const hw=n('hw'),hh=n('hh'),hd=n('hd'),bw=n('bw'),aw=n('aw'),lw=n('lw');
- const elements=[],groups=[];
- const add=(gname,origin,from,to,uv)=>{
-   const e=cube(gname,from,to,origin,uv);elements.push(e);
-   const g=group(gname,origin,[e.uuid]);groups.push(g);return g.uuid;
- };
- const head=add('head',[0,24,0],[-hw/2,24,-hd/2],[hw/2,24+hh,hd/2],[0,0]);
- const body=add('body',[0,24-hh,0],[-bw/2,12,-2],[bw/2,24,2],[0,16]);
- const armL=add('rightArm',[-bw/2-aw/2,22,0],[-bw/2-aw,12,-2],[-bw/2,24,2],[32,16]);
- const armR=add('leftArm',[bw/2+aw/2,22,0],[bw/2,12,-2],[bw/2+aw,24,2],[40,16]);
- const legL=add('rightLeg',[-lw/2,12,0],[-lw,0,-2],[0,12,2],[0,32]);
- const legR=add('leftLeg',[lw/2,12,0],[0,0,-2],[lw,12,2],[16,32]);
- const root=group('root',[0,0,0],[head,body,armL,armR,legL,legR]);groups.unshift(root);
- const model={
-  meta:{format_version:'5.0',model_format:'bedrock',box_uv:true},
-  name:document.getElementById('name').value||'My NPC',
-  model_identifier:'geometry.'+((document.getElementById('name').value||'my_npc').toLowerCase().replace(/[^a-z0-9_]/g,'_')),
-  visible_box:[2,3,1],resolution:{width:n('tw'),height:n('th')},
-  elements,groups,
-  outliner:[{uuid:root.uuid,isOpen:true,children:[head,body,armL,armR,legL,legR]}],
-  textures:[],animations:[],display:{},groups_data:[],name_history:[]
- };
- const blob=new Blob([JSON.stringify(model,null,2)],{type:'application/json'});
- const a=document.createElement('a');a.href=URL.createObjectURL(blob);
- const safe=(model.name||'npc').replace(/[\\/:*?"<>|]/g,'_');a.download=safe+'.bbmodel';a.click();
- setTimeout(()=>URL.revokeObjectURL(a.href),1000);
-};
+document.getElementById('make').addEventListener('click',build);
 </script></body></html>
